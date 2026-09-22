@@ -2,6 +2,8 @@
 #include <stdexcept> // provides "invalid_argument"
 #include <string>
 
+// I read the Part 2 assignment notes.
+
 // hr/min/sec -> t
 long long unsigned int TimeCode::ComponentsToSeconds(unsigned int hr, unsigned int min, unsigned long long int sec)
 {
@@ -65,7 +67,7 @@ void TimeCode::SetMinutes(unsigned int minutes)
 {
     if (minutes > 59)
     {
-        throw invalid_argument("Minutes should be between 0 adn 59");
+        throw invalid_argument("Minutes should be between 0 and 59");
     }
 
     unsigned int hr, min, sec;

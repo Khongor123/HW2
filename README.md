@@ -10,6 +10,6 @@
 
 Run: `make` to compile
 
-./nasa for NasaLaunchAnalysis.cpp
-./pdt for PaintDryTimer.cpp
-./tct for TimeCodeTests.cpp˝
+- ./nasa for NasaLaunchAnalysis.cpp
+- ./pdt for PaintDryTimer.cpp
+- ./tct for TimeCodeTests.cpp

@@ -53,28 +53,60 @@ TimeCode *compute_time_code(double surfaceArea){
 
 void tests(){
 	// get_time_remaining
-	DryingSnapShot dss;
-	dss.startTime = time(0);
-	TimeCode tc = TimeCode(0, 0, 7);
-	dss.timeToDry = &tc;
-	long long int ans = get_time_remaining(dss);
-	assert(ans > 6 && ans < 8);
-	// add more tests here
+    DryingSnapShot dss;
+    dss.startTime = time(0);
+    TimeCode tc = TimeCode(0, 0, 7);
+    dss.timeToDry = &tc;
+    long long int ans = get_time_remaining(dss);
+    assert(ans > 6 && ans < 8);
+
+    // test that elapsed time is subtracted correctly.
+    DryingSnapShot dss2;
+    dss2.startTime = time(0) - 3;
+    TimeCode tcElapsed = TimeCode(0, 0, 10);
+    dss2.timeToDry = &tcElapsed;
+
+    long long int ans2 = get_time_remaining(dss2);
+    assert(ans2 >= 6 && ans2 <= 7);
+
+    // test a finished batch.
+    DryingSnapShot dss3;
+    dss3.startTime = time(0) - 10;
+    TimeCode tcDone = TimeCode(0, 0, 5);
+    dss3.timeToDry = &tcDone;
+
+    assert(get_time_remaining(dss3) <= 0);
 
 
-	// get_sphere_sa
-	double sa = get_sphere_sa(2.0);
-	assert (50.2654 < sa && sa < 50.2655);
-	// add more tests here
+    // get_sphere_sa
+    double sa = get_sphere_sa(2.0);
+    assert(50.2654 < sa && sa < 50.2655);
+
+    // rad 0 should have surface area 0.
+    assert(get_sphere_sa(0.0) == 0.0);
+
+    // rad 1 should have surface area about 12.566.
+    double sa2 = get_sphere_sa(1.0);
+    assert(12.5663 < sa2 && sa2 < 12.5664);
 
 
-	// compute_time_code
-	TimeCode *tc2 = compute_time_code(1.0);
-	//cout << "tc: " << tc.GetTimeCodeAsSeconds() << endl;
-	assert(tc2->GetTimeCodeAsSeconds() == 1);
-	delete tc2;
+    // compute_time_code
+    TimeCode *tc2 = compute_time_code(1.0);
+    assert(tc2->GetTimeCodeAsSeconds() == 1);
+    delete tc2;
 
-	// Radius 2 should have surface area about 50.265,
+    // fractional surface area should be truncated to whole seconds
+    TimeCode *fractional = compute_time_code(12.9);
+    assert(fractional->GetTimeCodeAsSeconds() == 12);
+    delete fractional;
+
+    // 0 surface area should produce 0 drying time.
+    TimeCode *zeroTime = compute_time_code(0.0);
+    assert(zeroTime->GetTimeCodeAsSeconds() == 0);
+    delete zeroTime;
+
+
+    // Radius 2 should have surface area about 50.265,
     // which becomes 50 seconds after truncating
     TimeCode* tc3 = compute_time_code(get_sphere_sa(2.0));
 

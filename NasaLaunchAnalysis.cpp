@@ -7,6 +7,8 @@
 
 using namespace std;
 
+// I read the Part 2 assignment notes.
+
 // keep quoted values intact because csv fields can contain commas inside them
 vector<string> split_csv_line(const string& line) {
     vector<string> fields;
